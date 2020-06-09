@@ -1,0 +1,397 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""
+expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "ToDo"
+  """
+  delete_ToDo(
+    """filter the rows which have to be deleted"""
+    where: ToDo_bool_exp!
+  ): ToDo_mutation_response
+
+  """
+  delete single row from the table: "ToDo"
+  """
+  delete_ToDo_by_pk(id: uuid!): ToDo
+
+  """
+  insert data into the table: "ToDo"
+  """
+  insert_ToDo(
+    """the rows to be inserted"""
+    objects: [ToDo_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: ToDo_on_conflict
+  ): ToDo_mutation_response
+
+  """
+  insert a single row into the table: "ToDo"
+  """
+  insert_ToDo_one(
+    """the row to be inserted"""
+    object: ToDo_insert_input!
+
+    """on conflict condition"""
+    on_conflict: ToDo_on_conflict
+  ): ToDo
+
+  """
+  update data of the table: "ToDo"
+  """
+  update_ToDo(
+    """sets the columns of the filtered rows to the given values"""
+    _set: ToDo_set_input
+
+    """filter the rows which have to be updated"""
+    where: ToDo_bool_exp!
+  ): ToDo_mutation_response
+
+  """
+  update single row of the table: "ToDo"
+  """
+  update_ToDo_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: ToDo_set_input
+    pk_columns: ToDo_pk_columns_input!
+  ): ToDo
+}
+
+"""An object with globally unique ID"""
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+"""column ordering options"""
+enum order_by {
+  """in the ascending order, nulls last"""
+  asc
+
+  """in the ascending order, nulls first"""
+  asc_nulls_first
+
+  """in the ascending order, nulls last"""
+  asc_nulls_last
+
+  """in the descending order, nulls first"""
+  desc
+
+  """in the descending order, nulls first"""
+  desc_nulls_first
+
+  """in the descending order, nulls last"""
+  desc_nulls_last
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
+"""query root"""
+type query_root {
+  """
+  fetch data from the table: "ToDo"
+  """
+  ToDo_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [ToDo_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ToDo_order_by!]
+
+    """filter the rows returned"""
+    where: ToDo_bool_exp
+  ): ToDoConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
+}
+
+"""
+expression to compare columns of type String. All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+
+"""subscription root"""
+type subscription_root {
+  """
+  fetch data from the table: "ToDo"
+  """
+  ToDo_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [ToDo_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ToDo_order_by!]
+
+    """filter the rows returned"""
+    where: ToDo_bool_exp
+  ): ToDoConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
+}
+
+"""
+columns and relationships of "ToDo"
+"""
+type ToDo implements Node {
+  completed: Boolean!
+  id: ID!
+  item: String!
+}
+
+"""
+aggregated selection of "ToDo"
+"""
+type ToDo_aggregate {
+  aggregate: ToDo_aggregate_fields
+  nodes: [ToDo!]!
+}
+
+"""
+aggregate fields of "ToDo"
+"""
+type ToDo_aggregate_fields {
+  count(columns: [ToDo_select_column!], distinct: Boolean): Int
+  max: ToDo_max_fields
+  min: ToDo_min_fields
+}
+
+"""
+order by aggregate values of table "ToDo"
+"""
+input ToDo_aggregate_order_by {
+  count: order_by
+  max: ToDo_max_order_by
+  min: ToDo_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "ToDo"
+"""
+input ToDo_arr_rel_insert_input {
+  data: [ToDo_insert_input!]!
+  on_conflict: ToDo_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "ToDo". All fields are combined with a logical 'AND'.
+"""
+input ToDo_bool_exp {
+  _and: [ToDo_bool_exp]
+  _not: ToDo_bool_exp
+  _or: [ToDo_bool_exp]
+  completed: Boolean_comparison_exp
+  id: uuid_comparison_exp
+  item: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "ToDo"
+"""
+enum ToDo_constraint {
+  """unique or primary key constraint"""
+  ToDo_pkey
+}
+
+"""
+input type for inserting data into table "ToDo"
+"""
+input ToDo_insert_input {
+  completed: Boolean
+  id: uuid
+  item: String
+}
+
+"""aggregate max on columns"""
+type ToDo_max_fields {
+  id: uuid
+  item: String
+}
+
+"""
+order by max() on columns of table "ToDo"
+"""
+input ToDo_max_order_by {
+  id: order_by
+  item: order_by
+}
+
+"""aggregate min on columns"""
+type ToDo_min_fields {
+  id: uuid
+  item: String
+}
+
+"""
+order by min() on columns of table "ToDo"
+"""
+input ToDo_min_order_by {
+  id: order_by
+  item: order_by
+}
+
+"""
+response of any mutation on the table "ToDo"
+"""
+type ToDo_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [ToDo!]!
+}
+
+"""
+input type for inserting object relation for remote table "ToDo"
+"""
+input ToDo_obj_rel_insert_input {
+  data: ToDo_insert_input!
+  on_conflict: ToDo_on_conflict
+}
+
+"""
+on conflict condition type for table "ToDo"
+"""
+input ToDo_on_conflict {
+  constraint: ToDo_constraint!
+  update_columns: [ToDo_update_column!]!
+  where: ToDo_bool_exp
+}
+
+"""
+ordering options when selecting data from "ToDo"
+"""
+input ToDo_order_by {
+  completed: order_by
+  id: order_by
+  item: order_by
+}
+
+"""
+primary key columns input for table: "ToDo"
+"""
+input ToDo_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "ToDo"
+"""
+enum ToDo_select_column {
+  """column name"""
+  completed
+
+  """column name"""
+  id
+
+  """column name"""
+  item
+}
+
+"""
+input type for updating data in table "ToDo"
+"""
+input ToDo_set_input {
+  completed: Boolean
+  id: uuid
+  item: String
+}
+
+"""
+update columns of table "ToDo"
+"""
+enum ToDo_update_column {
+  """column name"""
+  completed
+
+  """column name"""
+  id
+
+  """column name"""
+  item
+}
+
+"""
+A Relay Connection object on "ToDo"
+"""
+type ToDoConnection {
+  edges: [ToDoEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ToDoEdge {
+  cursor: String!
+  node: ToDo
+}
+
+scalar uuid
+
+"""
+expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+
