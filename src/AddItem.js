@@ -21,11 +21,14 @@ const AddItem = ({ connection }) => {
           },
         },
         updater: (store) => {
-          const item = store.getRootField('insert_ToDo_one')
-          const clientRoot = store.get('client:root');
-          const connectionRecord = ConnectionHandler.getConnection(clientRoot, 'ToDoConnection')
-          console.log(connectionRecord);
-          ConnectionHandler.insertEdgeAfter(connectionRecord, item)
+          console.log('uppdater')
+          const root = store.getRoot()
+          const todoConnection = root.getLinkedRecord('ToDo_connection')
+          const edges = todoConnection.getLinkedRecords('edges')
+          // const edge = edges.getLinkedRecord('ToDoEdge')
+          console.log(edges)
+          // const connectionRecord = ConnectionHandler.insertEdgeAfter(todoConnection, edges)
+          // console.log(connectionRecord);
         },
         onCompleted(data) {
           console.log("Success", data);
