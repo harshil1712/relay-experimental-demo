@@ -11,7 +11,7 @@ const AddItem = ({ connection }) => {
     // console.log(itemText)
   }, []);
 
-  const onSubmit = useCallback(
+  const onSubmit =
     (e) => {
       e.preventDefault();
       addToDo({
@@ -21,12 +21,12 @@ const AddItem = ({ connection }) => {
           },
         },
         updater: (store) => {
-          console.log('uppdater')
-          const root = store.getRoot()
-          const todoConnection = root.getLinkedRecord('ToDo_connection')
-          const edges = todoConnection.getLinkedRecords('edges')
+          console.log("uppdater");
+          const root = store.getRootField('insert_ToDo_one');
+          const todoConnection = root.getLinkedRecord("ToDo_connection");
+          const edges = todoConnection.getLinkedRecords("edges");
           // const edge = edges.getLinkedRecord('ToDoEdge')
-          console.log(edges)
+          console.log(store);
           // const connectionRecord = ConnectionHandler.insertEdgeAfter(todoConnection, edges)
           // console.log(connectionRecord);
         },
@@ -35,9 +35,7 @@ const AddItem = ({ connection }) => {
           setItemText("");
         },
       });
-    },
-    [addToDo, itemText]
-  );
+    };
   return (
     <div>
       <form onSubmit={onSubmit}>
